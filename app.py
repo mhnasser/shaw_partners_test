@@ -19,7 +19,7 @@ def load_model(model_path="02_models/mohamad_model.pth"):
     model.eval()
     return model
 
-model = load_model(map_location=torch.device('cpu'))
+model = load_model()
 
 @app.post("/model/prediction")
 async def predict(input: ImageInput):
