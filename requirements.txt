@@ -1,6 +1,6 @@
 torch==1.13.0
 torchvision==0.1.6
-sys==3.9.12
+sys
 numpy==1.21.5
 matplotlib==3.5.1
 tensorflow==2.11.0
