@@ -24,7 +24,7 @@ import warnings
 
 ## Configs
 warnings.filterwarnings("ignore")
-device = "cuda" if torch.cuda.is_available() else "cpu"
+device = "cpu"
 fashion_mnist = datasets.FashionMNIST(
     "../00_data", download=True, train=True
 )
