@@ -40,7 +40,6 @@ val_targets = val_fmnist.targets
 class FMNISTDataset(Dataset):
     def __init__(self, x, y):
         x = x.float() / 255
-        x = x.view(-1, 28 * 28)
         self.x, self.y = x, y
 
     def __getitem__(self, ix):
@@ -50,42 +49,61 @@ class FMNISTDataset(Dataset):
     def __len__(self):
         return len(self.x)
 
-
 def get_data(batch_size=32):
     train = FMNISTDataset(tr_images, tr_targets)
     trn_dl = DataLoader(train, batch_size, shuffle=True)
     val = FMNISTDataset(val_images, val_targets)
-    val_dl = DataLoader(val, batch_size=len(val_images),
-    shuffle=False)
+    val_dl = DataLoader(val, batch_size=len(val_images), shuffle=False)
     return trn_dl, val_dl
 
+class FashionMNISTModel(nn.Module):
+    def __init__(self):
+        super(FashionMNISTModel, self).__init__()
+        self.conv_layers = nn.Sequential(
+            nn.Conv2d(1, 32, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(32, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2)
+        )
+        self.fc_layers = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(64 * 7 * 7, 128),
+            nn.ReLU(),
+            nn.Linear(128, 10)
+        )
+
+    def forward(self, x):
+        x = x.view(-1, 1, 28, 28)  # Reshape the input to (batch_size, channels, height, width)
+        x = self.conv_layers(x)
+        x = self.fc_layers(x)
+        return x
 
 def get_model(opt=""):
     print(f'using: {device}')
-    model = nn.Sequential(
-        nn.Linear(28 * 28, 1000),
-        nn.ReLU(),
-        nn.Linear(1000, 10)
-    ).to(device)
+    model = FashionMNISTModel().to(device)
+
     loss_fn = nn.CrossEntropyLoss()
+
     if opt == "sgd":
-        optimizer = SGD(model.parameters(), lr=1e-2)
+        optimizer = optim.SGD(model.parameters(), lr=1e-2)
     else:
-        optimizer = Adam(model.parameters(), lr=1e-2)
-    
+        optimizer = optim.Adam(model.parameters(), lr=1e-3)
+
     return model, loss_fn, optimizer
 
 
 def train_batch(x, y, model, opt, loss_fn):
     model.train() 
     prediction = model(x)
-    # compute loss
+    l2_regularization = 0
+    for param in model.parameters():
+        l2_regularization += torch.norm(param,2)
+        batch_loss = loss_fn(prediction, y) + 0.01*l2_regularization
     batch_loss = loss_fn(prediction, y)
     batch_loss.backward()
-    # apply new-weights = f(old-weights, old-weight-gradients)
-    # where "f" is the optimizer
     opt.step()
-    # Flush gradients memory for next batch of calculations
     opt.zero_grad()
     return batch_loss.item()
 
