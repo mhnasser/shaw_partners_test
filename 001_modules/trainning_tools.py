@@ -21,7 +21,6 @@ import matplotlib.pyplot as plt
 import warnings
 
 
-
 ## Configs
 warnings.filterwarnings("ignore")
 device = "cpu"
