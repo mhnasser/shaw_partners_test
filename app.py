@@ -14,7 +14,7 @@ class ImageInput(BaseModel):
 
 def load_model(model_path="02_models/mohamad_model.pth"):
     model, _, _ = get_model()
-    model.load_state_dict(torch.load(model_path), map_location=torch.device('cpu'))
+    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
     model.eval()
     return model
 
