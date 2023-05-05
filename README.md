@@ -33,7 +33,7 @@ Example:
 }
 ```
 
-####Status Codes
+#### Status Codes
 - `200 OK`: Successful prediction.
 - `400 Bad Request`: Malformed request body.
 
