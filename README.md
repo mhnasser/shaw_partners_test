@@ -1,7 +1,5 @@
 # API Description
 
-
-
 ## API Usage
 
 ### Request
