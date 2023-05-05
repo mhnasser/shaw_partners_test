@@ -11,7 +11,7 @@ POST http://18.217.245.182/model/prediction
 
 Example:
 
-```json
+``json
 {
     "data": [
         [10, 23, 59, 120, ... , 99, 55, 10],
@@ -21,7 +21,7 @@ Example:
         [20, 35, 55, 120, ... , 110, 55, 10]
     ]
 }
-```
+``
 
 ### Response
 
