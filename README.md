@@ -57,6 +57,3 @@ if response.status_code == 200:
 else:
     print("Error:", response.text)
 ```
-
-## Dependencies
-- `numpy`: : version 1.21.0 or later. Install via pip:
