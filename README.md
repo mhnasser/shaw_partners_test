@@ -2,10 +2,6 @@
 
 ## API Usage
 
-### Request
-
-Describe the endpoint and input parameters.
-
 #### Endpoint
 POST http://18.217.245.182/model/prediction
 
@@ -25,3 +21,14 @@ Example:
         [20, 35, 55, 120, ... , 110, 55, 10]
     ]
 }
+```
+
+### Response
+
+#### Response Body
+`prediction`: (int) the predicted label for the input image.
+```json
+{
+    "prediction": 7
+}
+```
